@@ -20,8 +20,8 @@ mailadress.
 
 Det enda som är absolut nödvändigt för konceptets gångbarhet är följande krav:
 
-* Det måste finnas en lösning på ekvationen f(m) = f(k) m är meddelandet, k är
-  den kolliderande strängen
+* Det måste finnas en lösning på ekvationen f(m) = f(k)
+  m är meddelandet, k är den kolliderande strängen
 
 * Att hitta lösningen på ekvationen ovan måste ta en lämplig mängd processortid.
 
