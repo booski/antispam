@@ -2,15 +2,15 @@
 
 import binascii, string, random, fileinput, re
 
-def hash(msg):
-    return binascii.crc_hqx(msg.encode('ascii'), 0)
+def hash(message):
+    return binascii.crc_hqx(message.encode('utf-8'), 0)
 
-def collide(hash_sum, sel, l):
+def collide(hash_sum, chars, length):
     max_iters = 1000000
 
     found = False
     for i in range(max_iters):
-        cand = ''.join(random.choice(sel) for _ in range(l))
+        cand = ''.join(random.choice(chars) for _ in range(length))
         
         if hash(cand) == hash_sum:
             found = cand
@@ -18,36 +18,36 @@ def collide(hash_sum, sel, l):
                 
     return found
 
-def create_package(msg, sel, l):
-    result = collide(hash(msg), sel, l)
+def create_package(message, chars, length):
+    result = collide(hash(message), chars, length)
     if result:
-        print("[{}],{}".format(result, msg))
+        print("[{}],{}".format(result, message))
         exit(0)
     else:
         print("No collision found.")
         exit(1)
 
-def verify_package(msg, col):
-    if hash(msg) == hash(col):
+def verify_package(message, collision):
+    if hash(message) == hash(collision):
         print("OK.")
         exit(0)
     else:
         print("Invalid.")
         exit(1)
 
-message=""
+input = ""
 for line in fileinput.input():
-    message = message + line
+    input = input + line
 
-message = message.strip()
-selections = string.ascii_letters + string.digits
-length = 32
+input = input.strip()
+allowed_chars = string.ascii_letters + string.digits
+collider_length = 32
 
-regex = re.compile(r'\[([' + selections + r']{' + str(length) + r'})\],(.*)', re.DOTALL)
-match = regex.match(message)
+regex = re.compile(r'\[([' + allowed_chars + r']{' + str(collider_length) + r'})\],(.*)', re.DOTALL)
+match = regex.match(input)
 
 if match:
     verify_package(match.group(1), match.group(2))
 else:
-    create_package(message, selections, length)
+    create_package(input, allowed_chars, collider_length)
     
