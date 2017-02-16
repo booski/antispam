@@ -21,7 +21,7 @@ def collide(hash_sum, chars, length):
 def create_package(message, chars, length):
     result = collide(mkhash(message), chars, length)
     if result:
-        print("[{}],{}".format(result, message))
+        print("[{}]\n{}".format(result, message))
         exit(0)
     else:
         print("No collision found.")
@@ -43,7 +43,7 @@ instring = instring.strip()
 allowed_chars = string.ascii_letters + string.digits
 collider_length = 32
 
-regex = re.compile(r'\[([' + allowed_chars + r']{' + str(collider_length) + r'})\],(.*)', re.DOTALL)
+regex = re.compile(r'\[([' + allowed_chars + r']{' + str(collider_length) + r'})\]\n(.*)', re.DOTALL)
 match = regex.match(instring)
 
 if match:
