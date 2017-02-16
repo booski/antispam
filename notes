@@ -1,0 +1,32 @@
+Nyttja hashkollisioner:
+
+Enligt http://www.win.tue.nl/hashclash/ChosenPrefixCollisions/ kan två arbiträrt
+valda meddelanden få samma md5-hash givet att meddelandena paddas med varsitt
+väl valt suffix:
+
+md5(m1||s1) == md5(m2||s2)
+
+Låt m2 vara den tomma strängen så förenklas situationen en aning:
+
+md5(m1||s1) == md5(s2)
+
+Om giltiga meddelanden förväntas på formen {m1, s1, s2}, så kan mottagaren
+enkelt verifiera att arbetet gjorts genom att asserta md5(m1||s1) == md5(s2).
+
+För att det inte ska vara möjligt att skapa ett lämpligt meddelande med
+tillhörande suffix i förväg och skicka till massor av mottagare så måste
+meddelandet innehålla något unikt, ex.vis en timestamp eller mottagarens
+mailadress.
+
+Det enda som är absolut nödvändigt för konceptets gångbarhet är följande krav:
+
+* Det måste finnas en lösning på ekvationen f(m) = f(k) m är meddelandet, k är
+  den kolliderande strängen
+
+* Att hitta lösningen på ekvationen ovan måste ta en lämplig mängd processortid.
+
+* Att beräkna f(x) måste vara rimligt snabbt för arbiträra värden av x.
+
+* Någon del av m måste vara rimligt unik, antingen globalt eller bara för
+  mottagaren.
+
