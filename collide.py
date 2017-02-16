@@ -2,7 +2,7 @@
 
 import binascii, string, random, fileinput, re
 
-def hash(message):
+def mkhash(message):
     return binascii.crc_hqx(message.encode('utf-8'), 0)
 
 def collide(hash_sum, chars, length):
@@ -12,14 +12,14 @@ def collide(hash_sum, chars, length):
     for i in range(max_iters):
         cand = ''.join(random.choice(chars) for _ in range(length))
         
-        if hash(cand) == hash_sum:
+        if mkhash(cand) == hash_sum:
             found = cand
             break
                 
     return found
 
 def create_package(message, chars, length):
-    result = collide(hash(message), chars, length)
+    result = collide(mkhash(message), chars, length)
     if result:
         print("[{}],{}".format(result, message))
         exit(0)
@@ -28,7 +28,7 @@ def create_package(message, chars, length):
         exit(1)
 
 def verify_package(message, collision):
-    if hash(message) == hash(collision):
+    if mkhash(message) == mkhash(collision):
         print("OK.")
         exit(0)
     else:
