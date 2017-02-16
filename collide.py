@@ -35,19 +35,19 @@ def verify_package(message, collision):
         print("Invalid.")
         exit(1)
 
-input = ""
+instring = ""
 for line in fileinput.input():
-    input = input + line
+    instring = instring + line
 
-input = input.strip()
+instring = instring.strip()
 allowed_chars = string.ascii_letters + string.digits
 collider_length = 32
 
 regex = re.compile(r'\[([' + allowed_chars + r']{' + str(collider_length) + r'})\],(.*)', re.DOTALL)
-match = regex.match(input)
+match = regex.match(instring)
 
 if match:
     verify_package(match.group(1), match.group(2))
 else:
-    create_package(input, allowed_chars, collider_length)
+    create_package(instring, allowed_chars, collider_length)
     
